@@ -17,18 +17,38 @@ public class MarkdownParse {
                 break;
             }
             int closeBracket = markdown.indexOf("]", openBracket);
+            if (closeBracket == -1) {
+                break;
+            }
             int openBracket2 = markdown.indexOf("[", openBracket+1);
             if (openBracket2 < closeBracket && openBracket2 != -1) {
                 closeBracket = markdown.indexOf("]", closeBracket+1);
             }
             int openParen = markdown.indexOf("(", closeBracket);
-            System.out.println("open1: " + openBracket + " open2: " + openBracket2);
+            //System.out.println("open1: " + openBracket + " open2: " + openBracket2);
             if (openParen == -1) {
                 break;
             }
             int closeParen = markdown.indexOf(")", openParen);
-            toReturn.add(markdown.substring(openParen + 1, closeParen));
+            if (closeParen == -1) {
+                break;
+            }
+            String link = markdown.substring(openParen + 1, closeParen);
             currentIndex = closeBracket + 1;
+            if (link.contains(" ")) {
+                continue;
+            }
+            else if (openParen - closeBracket != 1) {
+                continue;
+            }
+            else if (openBracket != 0) {
+                if (markdown.substring(openParen-1, openParen).equals("!")) {
+                    continue;
+                }
+            }
+            else {
+                toReturn.add(link);
+            }
             
         }
 
@@ -39,7 +59,6 @@ public class MarkdownParse {
     public static void main(String[] args) throws IOException {
         Path fileName = Path.of(args[0]);
         String content = Files.readString(fileName);
-        System.out.println("Testing file: " + content);
         ArrayList<String> links = getLinks(content);
 	    System.out.println(links);
     }
