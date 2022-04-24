@@ -50,6 +50,7 @@ public class MarkdownParse {
                 toReturn.add(link);
             }
             
+            
         }
 
         return toReturn;
