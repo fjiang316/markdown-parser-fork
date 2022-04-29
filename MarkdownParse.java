@@ -38,18 +38,17 @@ public class MarkdownParse {
             if (link.contains(" ")) {
                 continue;
             }
-            else if (openParen - closeBracket != 1) {
+            /* else if (openParen - closeBracket != 1) {
                 continue;
-            }
+            }*/
             else if (openBracket != 0) {
                 if (markdown.substring(openParen-1, openParen).equals("!")) {
                     continue;
                 }
-            }
-            else {
+		else {
                 toReturn.add(link);
+            	}
             }
-            
             
         }
 
