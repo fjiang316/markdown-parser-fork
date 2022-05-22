@@ -22,7 +22,18 @@ public class MarkdownParse {
             }
             int openBracket2 = markdown.indexOf("[", openBracket+1);
             if (openBracket2 < closeBracket && openBracket2 != -1) {
-                closeBracket = markdown.indexOf("]", closeBracket+1);
+                if (markdown.substring(closeBracket+1, closeBracket+2).equals("(")) {
+                    int closeparen2 = markdown.indexOf(")", closeBracket+1);
+                    if (closeparen2 != -1) {
+                        String substring = markdown.substring(closeBracket+2, closeparen2);
+                        toReturn.add(substring);
+                        currentIndex = closeBracket + 1;
+                        continue;
+                    }
+                }
+                else {
+                    closeBracket = markdown.indexOf("]", closeBracket+1);
+                }
             }
             int openParen = markdown.indexOf("(", closeBracket);
             //System.out.println("open1: " + openBracket + " open2: " + openBracket2);
@@ -42,9 +53,12 @@ public class MarkdownParse {
                 continue;
             }*/
             else if (openBracket != 0) {
-                if (markdown.substring(openParen-1, openParen).equals("!")) {
+                if (markdown.substring(openBracket-1, openBracket).equals("!")) {
                     continue;
                 }
+                /*
+                else if (markdown.substring(openParen-1, openParen).equals("`") && )
+                 */
                 else {
                     toReturn.add(link);
                 }
